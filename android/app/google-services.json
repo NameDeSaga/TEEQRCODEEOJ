@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "883953121928",
+    "project_id": "teeqrcodeoj",
+    "storage_bucket": "teeqrcodeoj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883953121928:android:8729141fa76292db6a3d3d",
+        "android_client_info": {
+          "package_name": "com.nattapon.teeqrcodeoj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "883953121928-9ru3tr9oapccig7h0dgbnincs9kia9a0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJBKhF6C6gCBiSe6MSc-OkiLVvPoxmpaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "883953121928-9ru3tr9oapccig7h0dgbnincs9kia9a0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
