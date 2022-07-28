@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^3.5.1
   cloud_firestore: ^3.4.1
   firebase_storage: ^10.3.3
+  qrscan: ^0.3.2
 
 dev_dependencies:
   flutter_test:

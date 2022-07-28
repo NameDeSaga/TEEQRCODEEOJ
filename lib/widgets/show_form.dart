@@ -5,11 +5,13 @@ class ShowForm extends StatelessWidget {
   final IconData iconData;
   final String hint;
   final Function(String) ChangeFunc;
+  final TextEditingController? textEditingController;
   const ShowForm({
     Key? key,
     required this.iconData,
     required this.hint,
     required this.ChangeFunc,
+    this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -17,8 +19,11 @@ class ShowForm extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       width: 250,
-      child: TextFormField(onChanged: ChangeFunc,
-        decoration: InputDecoration(hintText: hint,
+      child: TextFormField(
+        controller: textEditingController,
+        onChanged: ChangeFunc,
+        decoration: InputDecoration(
+          hintText: hint,
           prefixIcon: Icon(iconData),
           border: OutlineInputBorder(),
         ),
