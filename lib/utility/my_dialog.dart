@@ -31,7 +31,7 @@ class MyDialog {
         ),
         actions: [
           ShowTextButton(
-              label: 'OK',
+              label: 'ok',
               pressFunc: () {
                 Navigator.pop(context);
               })

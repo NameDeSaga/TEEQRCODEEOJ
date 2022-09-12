@@ -7,7 +7,7 @@ class MyConstant {
   static Color light = Color.fromARGB(255, 252, 244, 175);
   static Color actlve = Color.fromARGB(255, 104, 53, 187);
   static Color white = Colors.white;
-
+  static Color blue = Colors.blue;
   TextStyle h1Style() => TextStyle(
         fontSize: 36,
         color: dark,
@@ -33,8 +33,8 @@ class MyConstant {
       );
 
   TextStyle h3ButtonStyle() => TextStyle(
-        fontSize: 16,
-        color: white,
+        fontSize: 13,
+        color: blue,
         fontWeight: FontWeight.w500,
       );
 }

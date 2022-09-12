@@ -10,6 +10,7 @@ import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/utility/my_dialog.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
 import 'package:teeqrcodeoj/widgets/show_form.dart';
+import 'package:teeqrcodeoj/widgets/show_from_add_int.dart';
 import 'package:teeqrcodeoj/widgets/show_image.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
 
@@ -64,7 +65,7 @@ class _AddProductState extends State<AddProduct> {
             textEditingController: barCodeTextEditingController,
             iconData: Icons.qr_code,
             hint: 'barcode',
-            ChangeFunc: (p0) {
+            changeFunc: (p0) {
               codeScan = p0.trim();
             },
           )),
@@ -73,25 +74,25 @@ class _AddProductState extends State<AddProduct> {
             textEditingController: nameTextEditingController,
             iconData: Icons.fingerprint,
             hint: 'ชื่อสินค้า',
-            ChangeFunc: (p0) {
+            changeFunc: (p0) {
               name = p0.trim();
             },
           )),
           newCenter(
-              widget: ShowForm(
+              widget: ShowFormAddInt(
             textEditingController: priceTextEditingController,
             iconData: Icons.money,
             hint: 'ราคา',
-            ChangeFunc: (p0) {
+            changeFunc: (p0) {
               price = p0.trim();
             },
           )),
           newCenter(
-              widget: ShowForm(
+              widget: ShowFormAddInt(
             textEditingController: amountTextEditingController,
             iconData: Icons.numbers,
             hint: 'จำนวนสินค้า',
-            ChangeFunc: (p0) {
+            changeFunc: (p0) {
               amount = p0.trim();
             },
           )),
@@ -134,6 +135,9 @@ class _AddProductState extends State<AddProduct> {
                               uidRecord: uidRecord!,
                               dateRecord: dateRecord!,
                               status: status!);
+                          MyDialog(context: context).normalDialog(
+                              title: 'เพิ่มข้อมูล',
+                              subTitle: 'เพิ่มข้อมูลสำเร็จ');
 
                           await FirebaseFirestore.instance
                               .collection('product')

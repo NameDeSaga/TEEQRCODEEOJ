@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart';
 import 'package:teeqrcodeoj/models/product_model.dart';
+import 'package:teeqrcodeoj/models/sqlite_model.dart';
+import 'package:teeqrcodeoj/states/main_home.dart';
+import 'package:teeqrcodeoj/states/show_cart.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/utility/my_dialog.dart';
+import 'package:teeqrcodeoj/utility/sqlite.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
 import 'package:teeqrcodeoj/widgets/show_image.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
@@ -18,7 +22,7 @@ class ScanProduct extends StatefulWidget {
 
 class _ScanProductState extends State<ScanProduct> {
   ProductModel? productModel;
-
+  int amountProduct = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,45 +47,86 @@ class _ScanProductState extends State<ScanProduct> {
 
   Widget contentWidget() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       child: Column(
         children: [
+          showContent(head: 'บาร์โค็ด', value: productModel!.codeScan),
           showContent(head: 'ชื่อ :', value: productModel!.name),
           showContent(head: 'ราคา :', value: '${productModel!.price} บาท'),
           showContent(head: 'จำนวน :', value: '${productModel!.amount}'),
+          ShowText(
+            text: 'ใส่จำนำสินค้า',
+            textStyle: MyConstant().h2Style(),
+          ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (productModel!.amount != amountProduct) {
+                  setState(() {
+                    amountProduct++;
+                  });
+                }
+              });
+            },
+            icon: Icon(
+              Icons.add_circle,
+              color: MyConstant.dark,
+            ),
+          ),
+          ShowText(
+            text: amountProduct.toString(),
+            textStyle: MyConstant().h1Style(),
+          ),
+          IconButton(
+            onPressed: () {
+              if (amountProduct != 1) {
+                setState(() {
+                  amountProduct--;
+                });
+              }
+            },
+            icon: Icon(
+              Icons.do_not_disturb_on,
+              color: MyConstant.dark,
+            ),
+          ),
           buttonAddCart(),
         ],
       ),
     );
   }
 
-  ShowButton buttonAddCart() {
-    return ShowButton(
-      label: 'ใส่ตะกร้า',
-      pressFunc: () {
-        int amountProduct = 1;
+  ElevatedButton buttonAddCart() {
+    return ElevatedButton(
+      onPressed: () async {
+        Navigator.pop(context);
+        String idProduct = productModel!.codeScan;
+        String name = productModel!.name;
+        String price = productModel!.price.toString();
+        String amount = amountProduct.toString();
+        
+        double sumInt = double.parse(price) * double.parse(amount);
+        String sum = sumInt.toString();
+        print(
+            '### codeScan ==>> $idProduct,name ==>> $name,price ==>> $price, amount ==>> $amount,sum ==>> $sum');
+        SQLiteModel sqLiteModel = SQLiteModel(
+            idProduct: idProduct,
+            name: name,
+            price: price,
+            amount: amount,
+            sum: sum);
 
-        MyDialog(context: context).normalDialog(
-            title: productModel!.name,
-            subTitle: 'กรุณาเลือกจำนวนสินค้าที่ต้องการ',
-            contentWidget: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShowTextButton(
-                  label: 'เพิ่ม',
-                  pressFunc: () {},
-                ),
-                ShowText(
-                  text: amountProduct.toString(),
-                  textStyle: MyConstant().h1Style(),
-                ),
-                ShowTextButton(
-                  label: 'ลด',
-                  pressFunc: () {},
-                )
-              ],
-            ));
+        await SQLite().insertValueToSQLite(sqLiteModel).then((value) =>
+            
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ShowCart())));
       },
+      child: Text('ใส่ตะกร้าสินค้า'),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 

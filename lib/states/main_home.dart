@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:teeqrcodeoj/states/add_product.dart';
-import 'package:teeqrcodeoj/states/all_product.dart';
-import 'package:teeqrcodeoj/states/cart_product.dart';
+import 'package:teeqrcodeoj/states/body_product.dart';
 import 'package:teeqrcodeoj/states/history_item.dart';
 import 'package:teeqrcodeoj/states/history_product.dart';
+import 'package:teeqrcodeoj/states/list_product.dart';
 import 'package:teeqrcodeoj/states/scan_product.dart';
+import 'package:teeqrcodeoj/states/show_cart.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/widgets/show_image.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
@@ -42,8 +43,8 @@ class _MainHomeState extends State<MainHome> {
 
   var widgets = <Widget>[
     const ScanProduct(),
-    const CartProduct(),
-    const AllProduct(),
+    const ShowCart(),
+     BodyProduct(),
     const AddProduct(),
     const HistoryItem(),
     const HisroryProduct(),
@@ -74,7 +75,7 @@ class _MainHomeState extends State<MainHome> {
             physics: const ScrollPhysics(),
             itemCount: titles.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
+                crossAxisCount: 2),
             itemBuilder: (context, index) => InkWell(
               onTap: () {
                 Navigator.push(
@@ -88,7 +89,7 @@ class _MainHomeState extends State<MainHome> {
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 80,
+                      width: 150,
                       child: ShowImage(
                         path: pothImages[index],
                       ),
@@ -135,7 +136,7 @@ class _MainHomeState extends State<MainHome> {
       backgroundColor: MyConstant.white,
       actions: [
         ShowTextButton(
-          label: 'SingOut',
+          label: 'SignOut',
           pressFunc: () async {
             await FirebaseAuth.instance.signOut().then((value) {
               Navigator.pushNamedAndRemoveUntil(

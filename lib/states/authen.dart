@@ -4,6 +4,7 @@ import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/utility/my_dialog.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
 import 'package:teeqrcodeoj/widgets/show_form.dart';
+import 'package:teeqrcodeoj/widgets/show_from_password.dart';
 import 'package:teeqrcodeoj/widgets/show_image.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
 
@@ -57,11 +58,11 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  ShowForm formPassword() {
-    return ShowForm(
+  ShowFormPassword formPassword() {
+    return ShowFormPassword(
       iconData: Icons.lock_outline,
       hint: 'Password:',
-      ChangeFunc: (p0) {
+      changeFunc: (p0) {
         password = p0.trim();
       },
     );
@@ -71,7 +72,7 @@ class _AuthenState extends State<Authen> {
     return ShowForm(
       iconData: Icons.perm_identity,
       hint: 'User:',
-      ChangeFunc: (p0) {
+      changeFunc: (p0) {
         user = p0.trim();
       },
     );
