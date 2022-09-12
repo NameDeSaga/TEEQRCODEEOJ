@@ -37,4 +37,10 @@ class MyConstant {
         color: blue,
         fontWeight: FontWeight.w500,
       );
+      TextStyle h4Style() => TextStyle(
+        fontSize: 16,
+        color: dark,
+        fontWeight: FontWeight.w500,
+      );
 }
+

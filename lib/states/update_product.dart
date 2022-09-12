@@ -6,7 +6,7 @@ class UpdateProduct extends StatefulWidget {
 
   UpdateProduct({Key? key, required this.id}) : super(key: key);
 
-  @override
+   @override
   _UpdateProductState createState() => _UpdateProductState();
 }
 
@@ -27,7 +27,7 @@ class _UpdateProductState extends State<UpdateProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update product"),
+        title: Text("แก้ไขข้อมูลสินค้า"),
       ),
       body: Form(
           key: _formKey,
@@ -46,7 +46,6 @@ class _UpdateProductState extends State<UpdateProduct> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               var name = snapshot.data!.get('name');
               var price = snapshot.data!.get('price');
               var amount = snapshot.data!.get('amount');
@@ -69,7 +68,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please Enter Name';
+                            return 'กรุณาระบุชื่อสินค้า';
                           }
                           return null;
                         },
@@ -78,9 +77,10 @@ class _UpdateProductState extends State<UpdateProduct> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       child: TextFormField(
-                        initialValue: price,
+                        keyboardType: TextInputType.number,
+                        initialValue: price.toString(),
                         autofocus: false,
-                        onChanged: (value) => price = value,
+                        onChanged: (value) => price = double.parse(value),
                         decoration: InputDecoration(
                           labelText: 'ราคา : ',
                           labelStyle: TextStyle(fontSize: 20.0),
@@ -90,7 +90,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please Enter price';
+                            return 'กรุณาระบุจำนวนเงิน';
                           }
                           return null;
                         },
@@ -99,9 +99,10 @@ class _UpdateProductState extends State<UpdateProduct> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10.0),
                       child: TextFormField(
-                        initialValue: amount,
+                        keyboardType: TextInputType.number,
+                        initialValue: amount.toString(),
                         autofocus: false,
-                        onChanged: (value) => amount = value,
+                        onChanged: (value) => amount = int.parse(value),
                         decoration: InputDecoration(
                           labelText: 'จำนวน : ',
                           labelStyle: TextStyle(fontSize: 20.0),
@@ -111,7 +112,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please Enter amount';
+                            return 'กรุณาระบุจำนวนสินค้า';
                           }
                           return null;
                         },
@@ -131,17 +132,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                             },
                             child: Text(
                               'Update',
-                              style: TextStyle(fontSize: 18.0),
+                              style: TextStyle(fontSize: 20.0),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {},
-                            child: Text(
-                              'Reset',
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.blueGrey),
                           ),
                         ],
                       ),

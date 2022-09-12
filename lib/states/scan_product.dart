@@ -104,7 +104,6 @@ class _ScanProductState extends State<ScanProduct> {
         String name = productModel!.name;
         String price = productModel!.price.toString();
         String amount = amountProduct.toString();
-        
         double sumInt = double.parse(price) * double.parse(amount);
         String sum = sumInt.toString();
         print(
@@ -117,7 +116,6 @@ class _ScanProductState extends State<ScanProduct> {
             sum: sum);
 
         await SQLite().insertValueToSQLite(sqLiteModel).then((value) =>
-            
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => ShowCart())));
       },

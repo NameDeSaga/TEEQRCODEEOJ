@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:teeqrcodeoj/models/order_model.dart';
+import 'package:teeqrcodeoj/models/product_model.dart';
 import 'package:teeqrcodeoj/models/sqlite_model.dart';
+import 'package:teeqrcodeoj/models/stock_model.dart';
 import 'package:teeqrcodeoj/states/add_product.dart';
+import 'package:teeqrcodeoj/states/main_home.dart';
 import 'package:teeqrcodeoj/states/scan_product.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
+import 'package:teeqrcodeoj/utility/my_dialog.dart';
 import 'package:teeqrcodeoj/utility/sqlite.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
 import 'package:teeqrcodeoj/widgets/show_form.dart';
@@ -23,19 +28,13 @@ class ShowCart extends StatefulWidget {
 class _ShowCartState extends State<ShowCart> {
   List<SQLiteModel> sqliteModels = [];
   bool load = true;
-
-  double change = 0;
-  double total = 0;
-  double payment = 0;
-
-  int? id;
-  String? codeScan;
+  bool? haveData;
+  double change = 0; // เงินทอน
+  double total = 0; // ผลรวมราคาสินค้าทั้งหมด
+  double payment = 0; // ใส่เงินลูกค้า
+  String urlSlip = '';
   String? UidRecode;
-  String? name;
-  double? price;
-  int? amount;
 
-  String? dateRecord;
   Timestamp? dateRecordbill;
   var user = FirebaseAuth.instance.currentUser;
 
@@ -46,7 +45,7 @@ class _ShowCartState extends State<ShowCart> {
     processReadSQLite();
     DateTime dateTime = DateTime.now();
     dateRecordbill = Timestamp.fromDate(dateTime);
-    UidRecode = user!.uid;
+    UidRecode = user!.email;
   }
 
   Future<Null> processReadSQLite() async {
@@ -54,8 +53,19 @@ class _ShowCartState extends State<ShowCart> {
       sqliteModels.clear();
     }
 
-    await SQLite().readSQLite().then((value) {
+    await SQLite().readSQLite().then((value) async {
       print('### maps on SQLitHelper ==>> $value');
+
+      if (value.isEmpty) {
+        haveData = false;
+      } else {
+        haveData = true;
+        for (var item in value) {
+          SQLiteModel sqLiteModel = item;
+          sqliteModels.add(sqLiteModel);
+        }
+      }
+
       setState(() {
         load = false;
         sqliteModels = value;
@@ -66,21 +76,18 @@ class _ShowCartState extends State<ShowCart> {
   @override
   Widget build(BuildContext context) {
     //รวมราคาสินค้า
-    double total = 0;
-
+    total = 0;
     double producttotal = 0;
+
     for (var item in sqliteModels) {
       double sumInt = double.parse(item.sum.trim());
       setState(() {
         total = total + sumInt;
       });
     }
-    for (var item in sqliteModels) {
-      double sumInt = double.parse(item.sum.trim());
-      setState(() {
-        change = payment - total;
-      });
-    }
+    setState(() {
+      change = (payment - total) > 0 ? (payment - total) : 0;
+    });
 
     //
 
@@ -175,7 +182,92 @@ class _ShowCartState extends State<ShowCart> {
         Container(
           margin: EdgeInsets.only(left: 4),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: ListTile(
+                    leading: ShowImage(path: 'images/logo.png'),
+                    title: ShowText(
+                      text: 'ยืนยันการคิดเงิน ? ',
+                      textStyle: MyConstant().h2Style(),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        //เก็บสินค้าในตะกร้า
+                        var mapOrders = <Map<String, dynamic>>[];
+                        for (var item in sqliteModels) {
+                          mapOrders.add(item.toMap());
+                        }
+                        Timestamp dateOrder =
+                            Timestamp.fromDate(DateTime.now());
+                        OrderModel orderModel = OrderModel(
+                            dateOrder: dateOrder,
+                            mapOrders: mapOrders,
+                            status: 'ขายสินค้า',
+                            totalOrder: total.toString(),
+                            PaymentOrder: payment.toString(),
+                            changeOrder: change.toString(),
+                            UidRecode: UidRecode!,
+                            uidShopper: sqliteModels.toString(),
+                            urlSlip: urlSlip);
+                        DocumentReference reference = FirebaseFirestore.instance
+                            .collection('order')
+                            .doc();
+
+                        await reference
+                            .set(orderModel.toMap())
+                            .then((value) async {
+                          String docId = reference.id;
+                          print('## Save Order Success $docId');
+                        });
+
+                        //เก็บค่าสินค้าที่ออกจากสต๊อก
+                        for (var item in sqliteModels) {
+                          await FirebaseFirestore.instance
+                              .collection('product')
+                              .doc(item.name)
+                              .collection('stock')
+                              .doc(item.amount)
+                              .get()
+                              .then((value) async {
+                            ProductModel productModel =
+                                ProductModel.fromMap(value.data()!);
+                            int newAmount =
+                                productModel.amount - int.parse(item.amount);
+
+                            Map<String, dynamic> data = {};
+                            data['amount'] = newAmount;
+
+                            await FirebaseFirestore.instance
+                                .collection('product')
+                                .doc(item.name)
+                                .collection('stock')
+                                .doc(item.amount)
+                                .update(data)
+                                .then((value) {
+                              print('Success Update ${item.name}');
+                            });
+                          });
+                        }
+                        //เคลียร์ตระกร้าทั้งหมด
+                      /*  await SQLite().emptySQLite().then((value) {
+                          Navigator.pop(context);
+                          processReadSQLite();
+                        });*/
+                      },
+                      child: Text('ยืนยัน'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('ยกเลิก'),
+                    )
+                  ],
+                ),
+              );
+            },
             child: Text('คิดเงิน'),
           ),
         ),

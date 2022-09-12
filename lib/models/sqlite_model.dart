@@ -18,6 +18,8 @@ class SQLiteModel {
     required this.sum,
   });
 
+  String? get docUser => null;
+
   SQLiteModel copyWith({
     int? id,
     String? idProduct,
@@ -89,4 +91,6 @@ class SQLiteModel {
         amount.hashCode ^
         sum.hashCode;
   }
+
+  void add(SQLiteModel sqLiteModel) {}
 }
