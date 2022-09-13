@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:teeqrcodeoj/models/update_product_model.dart';
 
 class UpdateProduct extends StatefulWidget {
   final String id;
 
   UpdateProduct({Key? key, required this.id}) : super(key: key);
 
-   @override
+  @override
+  void initState() {
+    DateTime dateTime = DateTime.now();
+  }
+
   _UpdateProductState createState() => _UpdateProductState();
 }
 
@@ -46,6 +51,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                   child: CircularProgressIndicator(),
                 );
               }
+              var codeScan = snapshot.data!.get('codeScan');
               var name = snapshot.data!.get('name');
               var price = snapshot.data!.get('price');
               var amount = snapshot.data!.get('amount');
@@ -123,9 +129,27 @@ class _UpdateProductState extends State<UpdateProduct> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               // Validate returns true if the form is valid, otherwise false.
                               if (_formKey.currentState!.validate()) {
+                                //
+                                Timestamp dateupdate =
+                                    Timestamp.fromDate(DateTime.now());
+                                UpdateProductModel updateProductModel =
+                                    UpdateProductModel(
+                                  codeScan: codeScan!,
+                                  name: name,
+                                  price: price,
+                                  amount: amount,
+                                  dateupdate: dateupdate,
+                                  status: 'อัพเดท',
+                                );
+                                await FirebaseFirestore.instance
+                                    .collection('updateProductModel')
+                                    .doc()
+                                    .set(updateProductModel.toMap())
+                                    .then((value) => null);
+                                //
                                 updateUser(widget.id, name, price, amount);
                                 Navigator.pop(context);
                               }

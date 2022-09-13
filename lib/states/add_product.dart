@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:qrscan/qrscan.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:teeqrcodeoj/models/add_product_model.dart';
 import 'package:teeqrcodeoj/models/product_model.dart';
+import 'package:teeqrcodeoj/models/stock_model.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/utility/my_dialog.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
@@ -36,7 +39,7 @@ class _AddProductState extends State<AddProduct> {
   @override
   void initState() {
     super.initState();
-
+    uidRecord = user!.email;
     DateTime dateTime = DateTime.now();
     dateRecord = Timestamp.fromDate(dateTime);
 
@@ -138,7 +141,24 @@ class _AddProductState extends State<AddProduct> {
                           MyDialog(context: context).normalDialog(
                               title: 'เพิ่มข้อมูล',
                               subTitle: 'เพิ่มข้อมูลสำเร็จ');
+                          //
+                          Timestamp dateOrder =
+                              Timestamp.fromDate(DateTime.now());
 
+                          AddProductModel addProductModel = AddProductModel(
+                              codeScan: codeScan!,
+                              name: name!,
+                              price: double.parse(price!),
+                              amount: int.parse(amount!),
+                              uidRecord: uidRecord!,
+                              dateRecord: dateRecord!,
+                              status: 'เพิ่มสินค้า');
+                          await FirebaseFirestore.instance
+                              .collection('addProductModel')
+                              .doc()
+                              .set(addProductModel.toMap())
+                              .then((value) => null);
+                          //
                           await FirebaseFirestore.instance
                               .collection('product')
                               .doc()
