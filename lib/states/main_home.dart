@@ -48,7 +48,7 @@ class _MainHomeState extends State<MainHome> {
     const ShowCart(),
     BodyProduct(),
     const AddProduct(),
-    BodyOrder(),
+    BodyHistoryOrder(),
     BodyHistoryProduct(),
   ];
 

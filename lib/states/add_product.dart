@@ -150,7 +150,6 @@ class _AddProductState extends State<AddProduct> {
                               name: name!,
                               price: double.parse(price!),
                               amount: int.parse(amount!),
-                              uidRecord: uidRecord!,
                               dateRecord: dateRecord!,
                               status: 'สินค้าเข้า');
                           await FirebaseFirestore.instance

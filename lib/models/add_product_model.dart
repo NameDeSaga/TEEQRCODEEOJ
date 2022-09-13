@@ -9,7 +9,6 @@ class AddProductModel {
   final String name;
   final double price;
   final int amount;
-  final String uidRecord;
   final Timestamp dateRecord;
   final String status;
   AddProductModel({
@@ -17,7 +16,6 @@ class AddProductModel {
     required this.name,
     required this.price,
     required this.amount,
-    required this.uidRecord,
     required this.dateRecord,
     required this.status,
   });
@@ -28,7 +26,6 @@ class AddProductModel {
       'name': name,
       'price': price,
       'amount': amount,
-      'uidRecord': uidRecord,
       'dateRecord': dateRecord,
       'status': status,
     };
@@ -40,7 +37,6 @@ class AddProductModel {
       name: map['name'] as String,
       price: map['price'] as double,
       amount: map['amount'] as int,
-      uidRecord: map['uidRecord'] as String,
       dateRecord: (map['dateRecord']),
       status: map['status'] as String,
     );

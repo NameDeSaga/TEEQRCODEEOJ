@@ -5,15 +5,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teeqrcodeoj/states/history_product.dart';
+import 'package:teeqrcodeoj/states/history_product1.dart';
 
-class BodyHistoryProduct extends StatefulWidget {
-  BodyHistoryProduct({Key? key}) : super(key: key);
+class BodyHistoryProduct1 extends StatefulWidget {
+  BodyHistoryProduct1({Key? key}) : super(key: key);
 
   @override
-  State<BodyHistoryProduct> createState() => _BodyHistoryProductState();
+  State<BodyHistoryProduct1> createState() => _BodyHistoryProduct1State();
 }
 
-class _BodyHistoryProductState extends State<BodyHistoryProduct> {
+class _BodyHistoryProduct1State extends State<BodyHistoryProduct1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,12 +22,12 @@ class _BodyHistoryProductState extends State<BodyHistoryProduct> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('ประวัติสินค้า'),
+            Text('ประวัติสินค้าออก'),
             
           ],
         ),
       ),
-      body: HistoryProduct(),
+      body: HitoryProduct1(),
     );
   }
 }

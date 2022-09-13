@@ -9,14 +9,14 @@ import 'package:teeqrcodeoj/states/scan_product.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
 
-class BodyOrder extends StatefulWidget {
-  BodyOrder({Key? key}) : super(key: key);
+class BodyHistoryOrder extends StatefulWidget {
+  BodyHistoryOrder({Key? key}) : super(key: key);
 
   @override
-  State<BodyOrder> createState() => _BodyOrdertState();
+  State<BodyHistoryOrder> createState() => _BodyHistoryOrderState();
 }
 
-class _BodyOrdertState extends State<BodyOrder> {
+class _BodyHistoryOrderState extends State<BodyHistoryOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

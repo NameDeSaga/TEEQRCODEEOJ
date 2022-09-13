@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:teeqrcodeoj/states/body_history_product1.dart';
 import 'package:teeqrcodeoj/widgets/show_button.dart';
 import 'package:intl/intl.dart';
 
-class Historyproduct extends StatefulWidget {
-  Historyproduct({Key? key}) : super(key: key);
+class HistoryProduct extends StatefulWidget {
+  HistoryProduct({Key? key}) : super(key: key);
 
   @override
-  State<Historyproduct> createState() => _HistoryproductState();
+  State<HistoryProduct> createState() => _HistoryProductState();
 }
 
-class _HistoryproductState extends State<Historyproduct> {
+class _HistoryProductState extends State<HistoryProduct> {
   final Stream<QuerySnapshot> studentsStream =
       FirebaseFirestore.instance.collection('stockupdate').snapshots();
 
@@ -42,7 +43,12 @@ class _HistoryproductState extends State<Historyproduct> {
           children: [
             ShowButton(
               label: 'ประวัติสินค้าออก',
-              pressFunc: () {},
+              pressFunc: () =>  Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BodyHistoryProduct1(),
+                        ),
+                      ),
             ),
             Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
@@ -51,7 +57,7 @@ class _HistoryproductState extends State<Historyproduct> {
                   child: Table(
                     border: TableBorder.all(),
                     columnWidths: const <int, TableColumnWidth>{
-                      1: FixedColumnWidth(80),
+                      2: FixedColumnWidth(50),
                     },
                     defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
@@ -126,8 +132,8 @@ class _HistoryproductState extends State<Historyproduct> {
                             TableCell(
                               child: Center(
                                   child: Text(
-                                      DateFormat('dd-MM-yyyy\nHH:mm:ss')
-                                          .format(storedocs[i]['dateRecord'].toDate()),
+                                      DateFormat('dd-MM-yyyy\nHH:mm:ss').format(
+                                          storedocs[i]['dateRecord'].toDate()),
                                       style: TextStyle(fontSize: 10.0))),
                             ),
                             TableCell(
