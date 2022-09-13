@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:teeqrcodeoj/states/add_product.dart';
 import 'package:teeqrcodeoj/states/body_history_order.dart';
+import 'package:teeqrcodeoj/states/body_history_product.dart';
 import 'package:teeqrcodeoj/states/body_list_product.dart';
 import 'package:teeqrcodeoj/states/history_item.dart';
 import 'package:teeqrcodeoj/states/history_product.dart';
@@ -48,7 +49,7 @@ class _MainHomeState extends State<MainHome> {
     BodyProduct(),
     const AddProduct(),
     BodyOrder(),
-    const Historyproduct(),
+    BodyHistoryProduct(),
   ];
 
   @override

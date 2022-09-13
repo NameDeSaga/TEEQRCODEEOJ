@@ -10,6 +10,7 @@ class UpdateProduct extends StatefulWidget {
   @override
   void initState() {
     DateTime dateTime = DateTime.now();
+    
   }
 
   _UpdateProductState createState() => _UpdateProductState();
@@ -133,19 +134,19 @@ class _UpdateProductState extends State<UpdateProduct> {
                               // Validate returns true if the form is valid, otherwise false.
                               if (_formKey.currentState!.validate()) {
                                 //
-                                Timestamp dateupdate =
+                                Timestamp dateRecord =
                                     Timestamp.fromDate(DateTime.now());
                                 UpdateProductModel updateProductModel =
                                     UpdateProductModel(
-                                  codeScan: codeScan!,
-                                  name: name,
-                                  price: price,
-                                  amount: amount,
-                                  dateupdate: dateupdate,
-                                  status: 'อัพเดท',
-                                );
+                                        codeScan: codeScan!,
+                                        name: name,
+                                        price: price,
+                                        amount: amount,
+                                        dateRecord: dateRecord,
+                                        status: 'อัพเดท',
+                                        );
                                 await FirebaseFirestore.instance
-                                    .collection('updateProductModel')
+                                    .collection('stockupdate')
                                     .doc()
                                     .set(updateProductModel.toMap())
                                     .then((value) => null);

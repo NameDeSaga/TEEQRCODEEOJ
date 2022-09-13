@@ -8,15 +8,14 @@ class UpdateProductModel {
   final String name;
   final double price;
   final int amount;
-
-  final Timestamp dateupdate;
+  final Timestamp dateRecord;
   final String status;
   UpdateProductModel({
     required this.codeScan,
     required this.name,
     required this.price,
     required this.amount,
-    required this.dateupdate,
+    required this.dateRecord,
     required this.status,
   });
 
@@ -26,7 +25,7 @@ class UpdateProductModel {
       'name': name,
       'price': price,
       'amount': amount,
-      'dateupdate': dateupdate,
+      'dateRecord': dateRecord,
       'status': status,
     };
   }
@@ -37,7 +36,7 @@ class UpdateProductModel {
       name: map['name'] as String,
       price: map['price'] as double,
       amount: map['amount'] as int,
-      dateupdate: (map['dateupdate']),
+      dateRecord: (map['dateRecord']),
       status: map['status'] as String,
     );
   }

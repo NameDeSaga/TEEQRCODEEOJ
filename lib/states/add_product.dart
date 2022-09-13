@@ -152,9 +152,9 @@ class _AddProductState extends State<AddProduct> {
                               amount: int.parse(amount!),
                               uidRecord: uidRecord!,
                               dateRecord: dateRecord!,
-                              status: 'เพิ่มสินค้า');
+                              status: 'สินค้าเข้า');
                           await FirebaseFirestore.instance
-                              .collection('addProductModel')
+                              .collection('stockupdate')
                               .doc()
                               .set(addProductModel.toMap())
                               .then((value) => null);

@@ -204,15 +204,15 @@ class _ShowCartState extends State<ShowCart> {
                         Timestamp dateOrder =
                             Timestamp.fromDate(DateTime.now());
                         OrderModel orderModel = OrderModel(
-                            dateOrder: dateOrder,
-                            mapOrders: mapOrders,
-                            status: 'ขายสินค้า',
-                            totalOrder: total.toString(),
-                            PaymentOrder: payment.toString(),
-                            changeOrder: change.toString(),
-                            UidRecode: UidRecode!,
-                            uidShopper: sqliteModels.toString(),
-                            urlSlip: urlSlip);
+                          dateOrder: dateOrder,
+                          mapOrders: mapOrders,
+                          status: 'ขายสินค้า',
+                          totalOrder: total.toString(),
+                          PaymentOrder: payment.toString(),
+                          changeOrder: change.toString(),
+                          UidRecode: UidRecode!,
+                        );
+
                         DocumentReference reference = FirebaseFirestore.instance
                             .collection('order')
                             .doc();
@@ -225,38 +225,53 @@ class _ShowCartState extends State<ShowCart> {
                         });
 
                         //เก็บค่าสินค้าที่ออกจากสต๊อก
+                        var mapOrdersCut = <Map<String, dynamic>>[];
+                        for (var item in sqliteModels) {
+                          mapOrdersCut.add(item.toMap());
+                        }
+                        StockModel stockModel = StockModel(
+                            dateOrder: dateOrder,
+                            mapOrderCut: mapOrdersCut,
+                            status: 'สินค้าออก');
+                        // ignore: unused_local_variable
+                        await FirebaseFirestore.instance
+                            .collection('stockcut')
+                            .doc()
+                            .set(stockModel.toMap())
+                            .then((value) => null);
+                        //ตัดสินค้าออกจากสต๊อก
+
                         for (var item in sqliteModels) {
                           await FirebaseFirestore.instance
                               .collection('product')
-                              .doc(item.name)
-                              .collection('stock')
-                              .doc(item.amount)
+                              .where('codeScan', isEqualTo: item.idProduct)
                               .get()
                               .then((value) async {
-                            ProductModel productModel =
-                                ProductModel.fromMap(value.data()!);
-                            int newAmount =
-                                productModel.amount - int.parse(item.amount);
+                            if (value.docs.isEmpty) {
+                            } else {
+                              var existingAmount = value.docs[0].get('amount');
 
-                            Map<String, dynamic> data = {};
-                            data['amount'] = newAmount;
+                              Map<String, dynamic> data = {};
+                              data['amount'] =
+                                  existingAmount - int.parse(item.amount);
 
-                            await FirebaseFirestore.instance
-                                .collection('product')
-                                .doc(item.name)
-                                .collection('stock')
-                                .doc(item.amount)
-                                .update(data)
-                                .then((value) {
-                              print('Success Update ${item.name}');
-                            });
+                              await FirebaseFirestore.instance
+                                  .collection('product')
+                                  .doc(value.docs[0].id)
+                                  .update(data)
+                                  .then((value) {
+                                print(
+                                    '# Successfully Update ${item.name}: ${data['amount']}');
+                              });
+                            }
                           });
                         }
+
                         //เคลียร์ตระกร้าทั้งหมด
-                      /*  await SQLite().emptySQLite().then((value) {
+                        await SQLite().emptySQLite().then((value) {
                           Navigator.pop(context);
                           processReadSQLite();
-                        });*/
+                        });
                       },
                       child: Text('ยืนยัน'),
                     ),

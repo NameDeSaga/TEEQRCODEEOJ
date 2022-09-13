@@ -7,7 +7,6 @@ import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
 import 'package:intl/intl.dart';
 
-
 class Historyitem extends StatefulWidget {
   Historyitem({Key? key}) : super(key: key);
 
@@ -126,12 +125,14 @@ class _HistoryitemState extends State<Historyitem> {
                             TableCell(
                               child: Center(
                                   child: Text(
-                                      DateFormat('dd-MM-yyyy\nHH:mm:ss').format(storedocs[i]['dateOrder'].toDate()),
+                                      DateFormat('dd-MM-yyyy\nHH:mm:ss').format(
+                                          storedocs[i]['dateOrder'].toDate()),
                                       style: TextStyle(fontSize: 10.0))),
                             ),
                             TableCell(
                               child: Center(
-                                  child: Text(storedocs[i]['totalOrder'].toString(),
+                                  child: Text(
+                                      storedocs[i]['totalOrder'].toString(),
                                       style: TextStyle(fontSize: 10.0))),
                             ),
                             TableCell(
@@ -143,11 +144,9 @@ class _HistoryitemState extends State<Historyitem> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              //อย่ากด
-                                              OrderHistory(
-                                                  id: storedocs[i]['id'],),
-                                          //
+                                          builder: (context) => OrderHistory(
+                                            id: storedocs[i]['id'],
+                                          ),
                                         ),
                                       )
                                     },

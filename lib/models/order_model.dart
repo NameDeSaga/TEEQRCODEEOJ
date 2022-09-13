@@ -11,8 +11,7 @@ class OrderModel {
   final String PaymentOrder;
   final String changeOrder;
   final String UidRecode;
-  final String uidShopper;
-  final String urlSlip;
+
   OrderModel({
     required this.dateOrder,
     required this.mapOrders,
@@ -21,8 +20,6 @@ class OrderModel {
     required this.PaymentOrder,
     required this.changeOrder,
     required this.UidRecode,
-    required this.uidShopper,
-    required this.urlSlip,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,8 +31,6 @@ class OrderModel {
       'PaymentOrder': PaymentOrder,
       'changeOrder': changeOrder,
       'UidRecode': UidRecode,
-      'uidShopper': uidShopper,
-      'urlSlip': urlSlip,
     };
   }
 
@@ -48,8 +43,6 @@ class OrderModel {
       PaymentOrder: map['PaymentOrder'] as String,
       changeOrder: map['changeOrder'] as String,
       UidRecode: map['UidRecode'] as String,
-      uidShopper: map['uidShopper'] as String,
-      urlSlip: map['urlSlip'] as String,
     );
   }
 

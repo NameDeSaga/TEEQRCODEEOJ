@@ -5,20 +5,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class StockModel {
   final Timestamp dateOrder;
-  final String mapOrderscut;
+  final List<Map<String, dynamic>> mapOrderCut;
   final String status;
 
   StockModel({
-    
     required this.dateOrder,
-    required this.mapOrderscut,
+    required this.mapOrderCut,
     required this.status,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'dateOrder': dateOrder,
-      'mapOrders': mapOrderscut,
+      'mapOrder': mapOrderCut,
       'status': status,
     };
   }
@@ -26,7 +25,9 @@ class StockModel {
   factory StockModel.fromMap(Map<String, dynamic> map) {
     return StockModel(
       dateOrder: (map['dateOrder']),
-      mapOrderscut: map['mapOrders'] as String,
+      mapOrderCut: List<Map<String, dynamic>>.from(
+        (map['mapOrder']),
+      ),
       status: map['status'] as String,
     );
   }

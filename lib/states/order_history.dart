@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:teeqrcodeoj/utility/my_constant.dart';
 import 'package:teeqrcodeoj/widgets/show_text.dart';
-
+import 'package:intl/intl.dart';
 class OrderHistory extends StatefulWidget {
   final String id;
 
@@ -55,7 +55,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                     textStyle: MyConstant().h4Style(),
                   ),
                   ShowText(
-                    text: '\nวันที่ทำรายการ : \n' + dateOrder.toString(),
+                     text: '\nวันที่ทำรายการ : ' + DateFormat(' dd-MM-yyyy  เวลา : HH:mm:ss').format(dateOrder.toDate()),
                     textStyle: MyConstant().h4Style(),
                   ),
                   Container(
